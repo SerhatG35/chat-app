@@ -26,8 +26,12 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container component="main" maxWidth="lg">
-              <Box justifyContent="center" alignItems="center" height="100vh">
+            <Container
+              sx={{ paddingTop: 3, paddingBottom: 3, height: "100vh" }}
+              component="main"
+              maxWidth="lg"
+            >
+              <Box height="100%" justifyContent="center" alignItems="center">
                 {children}
               </Box>
             </Container>

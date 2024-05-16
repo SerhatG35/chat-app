@@ -9,7 +9,10 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user && !WHITE_LIST.includes(request.nextUrl.pathname)) {
+  if (
+    user?.role !== "authenticated" &&
+    !WHITE_LIST.includes(request.nextUrl.pathname)
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   return response;
