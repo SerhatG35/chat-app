@@ -1,14 +1,15 @@
-import { createClient } from '@supabase/utils/middleware';
+import { createClient } from "@supabase/utils/middleware";
 import { NextResponse, type NextRequest } from "next/server";
+
+const WHITE_LIST = ["/", "/sw.js", "/auth/callback"];
 
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createClient(request);
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log("hello");
 
-  if (!user && request.nextUrl.pathname !== "/") {
+  if (!user && !WHITE_LIST.includes(request.nextUrl.pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   return response;
