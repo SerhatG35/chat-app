@@ -1,12 +1,18 @@
 import { Stack } from "@mui/material";
-import Action from "./components/Action";
 import Window from "./components/Window";
+import Channels from "./components/Channels";
 
 const Chat = () => {
   return (
-    <Stack justifyContent="space-between" gap={2} height="100%" width="100%">
+    <Stack
+      justifyContent="space-between"
+      gap={2}
+      direction="row"
+      width="100%"
+      flexGrow={1}
+    >
+      <Channels />
       <Window />
-      <Action />
     </Stack>
   );
 };
