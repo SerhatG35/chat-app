@@ -1,22 +1,25 @@
-import { Avatar, Button, Stack, Typography } from "@mui/material";
-import { createClient } from "@supabase/utils/client";
+import { Stack } from "@mui/material";
 
-const ChatLayout = async ({ children }: { children: React.ReactNode }) => {
-  const { data } = await createClient().auth.getUser();
+type Props = {
+  navbar: React.ReactNode;
+  channels: React.ReactNode;
+  window: React.ReactNode;
+};
 
+const ChatLayout = async ({ navbar, channels, window }: Props) => {
   return (
     <Stack gap={2} height="100%" alignItems="center">
-      <Stack direction="row" width="100%" justifyContent="space-between">
-        <Button variant="contained">Leave Chat</Button>
-        <Stack justifyContent="center" alignItems="center">
-          <Typography>Name of the chat room</Typography>
-        </Stack>
-        <Avatar
-          alt="Profile Picture"
-          src={data.user?.user_metadata?.avatar_url}
-        />
+      {navbar}
+      <Stack
+        justifyContent="space-between"
+        gap={2}
+        direction="row"
+        width="100%"
+        flexGrow={1}
+      >
+        {channels}
+        {window}
       </Stack>
-      {children}
     </Stack>
   );
 };

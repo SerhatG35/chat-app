@@ -1,6 +1,9 @@
+"use client";
+
 import { Stack, Typography } from "@mui/material";
-import { createClient } from "@supabase/utils/client";
-import Action from "../Action";
+import Action from "../components/Action";
+import { useAtomValue } from "jotai";
+import { channel } from "@jotai/jotaiStore";
 
 const messages = [
   { name: "Serenity", message: "Hayatın dalgalarında yüz." },
@@ -29,9 +32,12 @@ const messages = [
   { name: "Quasar", message: "Evrenin derinliklerine doğru bir yolculuk." },
 ];
 
-export default async function Window() {
-  const { data } = await createClient().auth.getUser();
-  console.log(data);
+export default function Window() {
+  const selectedChannel = useAtomValue(channel);
+
+  if (!selectedChannel) {
+    return null;
+  }
 
   return (
     <Stack
@@ -43,42 +49,48 @@ export default async function Window() {
       bgcolor="#323232"
       justifyContent="space-between"
     >
-      <Stack position="relative" height="100%" width="100%">
-        <Stack
-          position="absolute"
-          overflow="auto"
-          height="100%"
-          width="100%"
-          gap={2}
-        >
-          {messages.map(({ message, name }) => (
+      {messages.length > 0 ? (
+        <>
+          <Stack position="relative" height="100%" width="100%">
             <Stack
-              bgcolor="#ffe182"
-              padding={1}
-              maxWidth="30%"
-              key={`${name}${message}`}
-              borderRadius={1}
-              position="relative"
+              position="absolute"
+              overflow="auto"
+              height="100%"
+              width="100%"
+              gap={2}
             >
-              <Typography color="black" fontWeight="700" fontSize="12px">
-                {name}
-              </Typography>
-              <Typography color="black">{message}</Typography>
-              <Typography
-                position="absolute"
-                bottom={1}
-                right={4}
-                fontSize="8px"
-                fontWeight="700"
-                color="black"
-              >
-                10:10
-              </Typography>
+              {messages.map(({ message, name }) => (
+                <Stack
+                  bgcolor="#ffe182"
+                  padding={1}
+                  maxWidth="30%"
+                  key={`${name}${message}`}
+                  borderRadius={1}
+                  position="relative"
+                >
+                  <Typography color="black" fontWeight="700" fontSize="12px">
+                    {name}
+                  </Typography>
+                  <Typography color="black">{message}</Typography>
+                  <Typography
+                    position="absolute"
+                    bottom={1}
+                    right={4}
+                    fontSize="8px"
+                    fontWeight="700"
+                    color="black"
+                  >
+                    10:10
+                  </Typography>
+                </Stack>
+              ))}
             </Stack>
-          ))}
-        </Stack>
-      </Stack>
-      <Action />
+          </Stack>
+          <Action />
+        </>
+      ) : (
+        <Typography>No messages</Typography>
+      )}
     </Stack>
   );
 }
