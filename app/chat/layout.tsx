@@ -1,4 +1,7 @@
+"use client";
+import { channel } from "@jotai/jotaiStore";
 import { Stack } from "@mui/material";
+import { useAtomValue } from "jotai";
 
 type Props = {
   navbar: React.ReactNode;
@@ -7,7 +10,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-const ChatLayout = async ({ navbar, channels, window, children }: Props) => {
+const ChatLayout = ({ navbar, channels, window, children }: Props) => {
+  const selectedChannel = useAtomValue(channel);
   return (
     <Stack gap={2} height="100%" alignItems="center">
       {navbar}
@@ -19,7 +23,7 @@ const ChatLayout = async ({ navbar, channels, window, children }: Props) => {
         flexGrow={1}
       >
         {children}
-        {channels}
+        {selectedChannel ? null : channels}
         {window}
       </Stack>
     </Stack>

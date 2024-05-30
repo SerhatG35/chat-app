@@ -1,9 +1,10 @@
 "use client";
 import type { User as _user } from "@supabase/auth-js";
-import { Avatar, Button, Stack } from "@mui/material";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import getUser from "@supabase/utils/user";
-import SelectedChannelName from "./components/SelectedChannelName";
+import { useAtom, useAtomValue } from "jotai";
+import { channel } from "@jotai/jotaiStore";
 
 type User = {
   user: _user | null;
@@ -11,6 +12,7 @@ type User = {
 
 export default function Navbar() {
   const [data, setData] = useState<User | undefined>(undefined);
+  const [selectedChannel, setSelectedChannel] = useAtom(channel);
 
   const retriveUser = async () => {
     setData(await getUser());
@@ -25,10 +27,21 @@ export default function Navbar() {
       direction="row"
       width="100%"
       height="40px"
-      justifyContent="space-between"
+      justifyContent={selectedChannel ? "space-between" : "flex-end"}
     >
-      <Button variant="contained">Leave Chat</Button>
-      <SelectedChannelName />
+      {selectedChannel ? (
+        <>
+          <Button
+            variant="contained"
+            onClick={() => setSelectedChannel(undefined)}
+          >
+            Leave Chat
+          </Button>
+          <Stack justifyContent="center" alignItems="center">
+            <Typography>{selectedChannel?.slug ?? ""}</Typography>
+          </Stack>
+        </>
+      ) : null}
       {data?.user?.user_metadata ? (
         <Avatar
           alt="Profile Picture"

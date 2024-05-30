@@ -26,7 +26,7 @@ export default function Window() {
 
   return (
     <Stack
-      width="80%"
+      width="100%"
       height="100%"
       gap={2}
       padding={1}
