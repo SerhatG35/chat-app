@@ -13,7 +13,9 @@ type Props = {
 const ChatLayout = ({ navbar, channels, window, children }: Props) => {
   const selectedChannel = useAtomValue(channel);
   return (
-    <Stack gap={2} height="100%" alignItems="center">
+    <Stack gap={2} 
+    height="100%" 
+    alignItems="center">
       {navbar}
       <Stack
         justifyContent="space-between"
